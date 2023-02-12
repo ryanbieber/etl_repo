@@ -8,7 +8,7 @@ USER appuser
 # Install application into container
 COPY . .
 
-RUN python pip install -r requirements.txt
+RUN python pip install -r {{cookiecutter.repo_name}}/requirements.txt
 
 # Run the executable
-ENTRYPOINT ["python", "{{cookiecutter.repo_name}}"]
+ENTRYPOINT ["python", "-m", "{{cookiecutter.repo_name}}"]
