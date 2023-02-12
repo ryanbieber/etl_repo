@@ -1,71 +1,37 @@
 ## this will get the env vars that are used for the data pull
 import logging
-from sqlalchemy import URL
-from sqlalchemy import create_engine
+from sqlalchemy import URL, create_engine
+import os
+from dotenv import load_dotenv
+from dataclasses import dataclass
 
 
-class DatabaseEngine:
-    def __init__(self, db, user, host, port, password, engine):
-        self.db = db
-        self.user = user
-        self.host = host
-        self.port = port
-        self.password = password
-        self.engine = engine
+@dataclass
+class DatabaseCredentials:
+    db: str
+    user:str 
+    host:str 
+    port:str 
+    password:str 
+    engine:str
+    file_name: str = ".env"
 
-    def create_engine(self):
-        if toupper(self.engine) == "POSTGRES":
-
-            url_object = URL.create(
-                "postgresql+psycopg2",
-                username=self.user,
-                password=self.password,  # plain (unescaped) text
-                host=self.host,
-                database=self.db,
-            )
-
-            engine = create_engine(url_object)
-            return engine
-        else if toupper(self.engine) == "MSSQL":
-            url_object = URL.create(
-                "mysql+pymysql",
-                username=self.user,
-                password=self.password,  # plain (unescaped) text
-                host=self.host,
-                database=self.db,
-            )
-
-            engine = create_engine(url_object)
-            return engine
-        else if toupper(self.engine) == "ORACLE":
-            url_object = URL.create(
-                "oracle",
-                username=self.user,
-                password=self.password,  # plain (unescaped) text
-                host=self.host,
-                database=self.db,
-            )
-
-            engine = create_engine(url_object)
-            return engine
-        else if toupper(self.engine) == "SQL SERVER":
-            url_object = URL.create(
-                "mssql+pymssql",
-                username=self.user,
-                password=self.password,  # plain (unescaped) text
-                host=self.host,
-                database=self.db,
-            )
-
-            engine = create_engine(url_object)
-            return engine
-        else:
-            logging.error(f"{engine} is not supported. please consult with the db lead to get it added or make sure you spelled it right, supported dbs are POSTGRES, MSSQL, ORACLE, or SQL SERVER")
+    def __post_init__(self):
+        load_dotenv(self.file_name)
+        self.db = os.getenv("db")
+        self.user = os.getenv("user")
+        self.host = os.getenv("host")
+        self.port = os.getenv("port")
+        self.password = os.getenv("password")
+        self.engine = os.getenv("engine")
+        return self
+        
 
 
-    def postgres(self):
 
 
-    def engine(self):
-        try:
-            logging.info(f"Trying to connect to {engine} engine")
+
+
+
+
+
