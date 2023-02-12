@@ -1,14 +1,12 @@
 FROM python:{python_version}-slim
 
-# Create and switch to a new user
-RUN useradd --create-home appuser
-WORKDIR /home/appuser
-USER appuser
-
 # Install application into container
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
 COPY . .
-
-RUN python pip install -r {{cookiecutter.repo_name}}/requirements.txt
-
+# Run the executable
 # Run the executable
 ENTRYPOINT ["python", "-m", "{{cookiecutter.repo_name}}"]
